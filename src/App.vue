@@ -1,10 +1,18 @@
 <template>
-  <header>
+  <header class="header">
     <h1>Tetris</h1>
   </header>
-  <main></main>
+  <main>
+    <GameBoard />
+  </main>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import GameBoard from './components/GameBoard.vue'
+</script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .header {
+    width: 100%;
+  }
+</style>
