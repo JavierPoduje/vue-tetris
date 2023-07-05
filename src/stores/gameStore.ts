@@ -1,5 +1,7 @@
 import { ref } from 'vue'
+import { randomPiece } from './helpers'
 import { defineStore } from 'pinia'
+import type { Piece } from '@/models'
 
 // ref()s become state properties
 // computed()s become getters
@@ -12,14 +14,19 @@ export const useGameStore = defineStore('gameStore', () => {
   const board = ref<number[][]>(
     new Array(BOARD_ROWS).fill(new Array(BOARD_COLS).fill(0))
   )
+  const nextPiece = ref<Piece>(randomPiece())
+  const piece = ref<Piece>(randomPiece())
 
-  return { board }
+  const tick = () => {
+    console.log('tick')
+  }
 
-  // const count = ref(0)
-  // const doubleCount = computed(() => count.value * 2)
-  // function increment() {
-  //   count.value++
-  // }
-
-  // return { count, doubleCount, increment }
+  return {
+    // props
+    board,
+    piece,
+    nextPiece,
+    // actions
+    tick
+  }
 })

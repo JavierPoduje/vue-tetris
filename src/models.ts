@@ -21,4 +21,5 @@ export enum PieceEnum {
 export interface Piece {
   type: PieceEnum
   color: PieceColorEnum
+  shape: number[][]
 }
