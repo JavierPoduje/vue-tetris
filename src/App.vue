@@ -1,6 +1,7 @@
 <template>
   <header class="header">
     <h1>Tetris</h1>
+    <GameButton text="Tick!" @click="console.log('click!')" />
   </header>
   <main>
     <GameBoard />
@@ -9,6 +10,7 @@
 
 <script setup lang="ts">
   import GameBoard from './components/GameBoard.vue'
+  import GameButton from './components/GameButton.vue'
 </script>
 
 <style scoped lang="scss">
