@@ -4,13 +4,13 @@
     <GameButton text="Tick!" @click="store.tick" />
   </header>
   <main>
-    <GameBoard />
+    <GameGrid />
   </main>
 </template>
 
 <script setup lang="ts">
   import { useGameStore } from './stores/gameStore.ts'
-  import GameBoard from './components/GameBoard.vue'
+  import GameGrid from './components/GameGrid.vue'
   import GameButton from './components/GameButton.vue'
 
   const store = useGameStore()

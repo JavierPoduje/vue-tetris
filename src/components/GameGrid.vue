@@ -1,6 +1,6 @@
 <template>
-  <section class="board">
-    <div class="board__grid">
+  <section class="grid">
+    <div class="grid__container">
       <div v-for="{ row, col } in grid" :key="`${row}-${col}`" class="cell">
         {{ row }} {{ col }}
       </div>
@@ -35,7 +35,7 @@
   $number-of-columns: 10;
   $number-of-rows: 20;
 
-  .board {
+  .grid {
     background-color: map-get($colors, surface0);
     width: calc(
       calc($cell-size * $number-of-columns) + calc($number-of-columns * 1px)
@@ -44,7 +44,7 @@
       calc($cell-size * $number-of-rows) + calc($number-of-rows * 1px)
     );
 
-    &__grid {
+    &__container {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
       grid-template-rows: repeat(20, 1fr);
