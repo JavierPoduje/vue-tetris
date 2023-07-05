@@ -46,8 +46,8 @@
 
     &__container {
       display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      grid-template-rows: repeat(20, 1fr);
+      grid-template-columns: repeat($number-of-columns, 1fr);
+      grid-template-rows: repeat($number-of-rows, 1fr);
       grid-gap: 1px 1px;
       border: 1px solid map-get($colors, surface1);
       height: 100%;
