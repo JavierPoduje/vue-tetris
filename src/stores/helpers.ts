@@ -1,33 +1,60 @@
 import { PieceColorEnum, PieceEnum, type Piece } from '@/models'
+import stringifyCoord from '@/utils/stringifyCoord'
 
-const shapeByPieceType: Record<PieceEnum, number[][]> = {
-  [PieceEnum.I]: [[1], [1], [1], [1]],
-  [PieceEnum.J]: [
-    [0, 1],
-    [0, 1],
-    [1, 1]
-  ],
-  [PieceEnum.L]: [
-    [1, 0],
-    [1, 0],
-    [1, 1]
-  ],
-  [PieceEnum.O]: [
-    [1, 1],
-    [1, 1]
-  ],
-  [PieceEnum.S]: [
-    [0, 1, 1],
-    [1, 1, 0]
-  ],
-  [PieceEnum.T]: [
-    [0, 1, 0],
-    [1, 1, 1]
-  ],
-  [PieceEnum.Z]: [
-    [1, 1, 0],
-    [0, 1, 1]
-  ]
+const initialCoordsByPiece = (pieceType: PieceEnum): Set<string> => {
+  switch (pieceType) {
+    case PieceEnum.I:
+      return new Set([
+        stringifyCoord({ row: -3, col: 4 }),
+        stringifyCoord({ row: -2, col: 4 }),
+        stringifyCoord({ row: -1, col: 4 }),
+        stringifyCoord({ row: 0, col: 4 })
+      ])
+    case PieceEnum.J:
+      return new Set([
+        stringifyCoord({ row: -2, col: 4 }),
+        stringifyCoord({ row: -1, col: 4 }),
+        stringifyCoord({ row: 0, col: 4 }),
+        stringifyCoord({ row: 0, col: 5 })
+      ])
+    case PieceEnum.L:
+      return new Set([
+        stringifyCoord({ row: -2, col: 5 }),
+        stringifyCoord({ row: -1, col: 5 }),
+        stringifyCoord({ row: 0, col: 5 }),
+        stringifyCoord({ row: 0, col: 4 })
+      ])
+    case PieceEnum.O:
+      return new Set([
+        stringifyCoord({ row: -1, col: 4 }),
+        stringifyCoord({ row: -1, col: 5 }),
+        stringifyCoord({ row: 0, col: 4 }),
+        stringifyCoord({ row: 0, col: 5 })
+      ])
+    case PieceEnum.S:
+      return new Set([
+        stringifyCoord({ row: -1, col: 5 }),
+        stringifyCoord({ row: -1, col: 4 }),
+        stringifyCoord({ row: 0, col: 4 }),
+        stringifyCoord({ row: 0, col: 3 })
+      ])
+    case PieceEnum.T:
+      return new Set([
+        stringifyCoord({ row: -1, col: 4 }),
+        stringifyCoord({ row: 0, col: 4 }),
+        stringifyCoord({ row: 0, col: 5 }),
+        stringifyCoord({ row: 0, col: 3 })
+      ])
+    case PieceEnum.Z:
+      return new Set([
+        stringifyCoord({ row: -1, col: 3 }),
+        stringifyCoord({ row: -1, col: 4 }),
+        stringifyCoord({ row: 0, col: 4 }),
+        stringifyCoord({ row: 0, col: 5 })
+      ])
+    default:
+      throw new Error(`Unknown piece type: ${pieceType}`)
+  }
 }
 
 export const randomPiece = (): Piece => {
@@ -41,11 +68,11 @@ export const randomPiece = (): Piece => {
     PieceEnum.Z
   ]
   const colors: PieceColorEnum[] = [
-    PieceColorEnum.BLUE,
-    PieceColorEnum.CYAN,
+    PieceColorEnum.ROSEWATER,
+    PieceColorEnum.SKY,
     PieceColorEnum.GREEN,
-    PieceColorEnum.ORANGE,
-    PieceColorEnum.PURPLE,
+    PieceColorEnum.PEACH,
+    PieceColorEnum.MAUVE,
     PieceColorEnum.RED,
     PieceColorEnum.YELLOW
   ]
@@ -53,5 +80,14 @@ export const randomPiece = (): Piece => {
   const pieceType = pieces[Math.floor(Math.random() * pieces.length)]
   const color = colors[Math.floor(Math.random() * colors.length)]
 
-  return { type: pieceType, color, shape: shapeByPieceType[pieceType] }
+  return { type: pieceType, color, coords: initialCoordsByPiece(pieceType) }
+}
+
+export const movePieceDown = (piece: Piece): Piece['coords'] => {
+  const newCoords = new Set<string>()
+  piece.coords.forEach((coord) => {
+    const [row, col] = coord.split('|').map(Number)
+    newCoords.add(stringifyCoord({ row: row + 1, col }))
+  })
+  return newCoords
 }

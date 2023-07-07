@@ -1,11 +1,11 @@
 export enum PieceColorEnum {
-  BLUE = 'BLUE',
-  CYAN = 'CYAN',
-  GREEN = 'GREEN',
-  ORANGE = 'ORANGE',
-  PURPLE = 'PURPLE',
-  RED = 'RED',
-  YELLOW = 'YELLOW'
+  ROSEWATER = 'rosewater',
+  SKY = 'sky',
+  GREEN = 'green',
+  PEACH = 'peach',
+  MAUVE = 'mauve',
+  RED = 'red',
+  YELLOW = 'yellow'
 }
 
 export enum PieceEnum {
@@ -21,5 +21,5 @@ export enum PieceEnum {
 export interface Piece {
   type: PieceEnum
   color: PieceColorEnum
-  shape: number[][]
+  coords: Set<string>
 }

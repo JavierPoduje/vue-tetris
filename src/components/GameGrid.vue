@@ -1,7 +1,12 @@
 <template>
   <section class="grid">
     <div class="grid__container">
-      <div v-for="{ row, col } in grid" :key="`${row}-${col}`" class="cell">
+      <div
+        v-for="{ row, col } in grid"
+        :key="`${row}-${col}`"
+        class="cell"
+        :class="isPiece(row, col) && `cell--${store?.piece?.color}`"
+      >
         {{ row }} {{ col }}
       </div>
     </div>
@@ -11,6 +16,7 @@
 <script setup lang="ts">
   import { computed } from 'vue'
   import { useGameStore } from '../stores/gameStore'
+  import stringifyCoord from '../utils/stringifyCoord'
 
   const store = useGameStore()
 
@@ -26,6 +32,9 @@
       []
     )
   })
+
+  const isPiece = (row: number, col: number) =>
+    store?.piece?.coords?.has(stringifyCoord({ row, col }))
 </script>
 
 <style scoped lang="scss">
@@ -57,7 +66,30 @@
         height: $cell-size;
         border: 1px solid map-get($colors, surface2);
         color: map-get($colors, blue);
+        background-color: transparent;
         font-size: 8px;
+
+        &--rosewater {
+          background-color: map-get($colors, rosewater);
+        }
+        &--sky {
+          background-color: map-get($colors, sky);
+        }
+        &--green {
+          background-color: map-get($colors, green);
+        }
+        &--peach {
+          background-color: map-get($colors, peach);
+        }
+        &--mauve {
+          background-color: map-get($colors, mauve);
+        }
+        &--red {
+          background-color: map-get($colors, red);
+        }
+        &--yellow {
+          background-color: map-get($colors, yellow);
+        }
       }
     }
   }

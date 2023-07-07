@@ -1,9 +1,9 @@
 <template>
-  <button @click="$emit('click')" class="button">{{ text }}</button>
+  <button @click="$emit('click')" class="button">{{ props.text }}</button>
 </template>
 
 <script setup lang="ts">
-  defineProps<{
+  const props = defineProps<{
     text: {
       type: string
       required: true

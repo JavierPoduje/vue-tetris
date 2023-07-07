@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { randomPiece } from './helpers'
+import { randomPiece, movePieceDown } from './helpers'
 import { defineStore } from 'pinia'
 import type { Piece } from '@/models'
 
@@ -18,7 +18,9 @@ export const useGameStore = defineStore('gameStore', () => {
   const piece = ref<Piece>(randomPiece())
 
   const tick = () => {
-    console.log('tick')
+    console.log("piece.value.coords: ", piece.value.coords);
+    piece.value.coords = movePieceDown(piece.value)
+    console.log("piece.value.coords: ", piece.value.coords);
   }
 
   return {
