@@ -83,11 +83,37 @@ export const randomPiece = (): Piece => {
   return { type: pieceType, color, coords: initialCoordsByPiece(pieceType) }
 }
 
-export const movePieceDown = (piece: Piece): Piece['coords'] => {
+export const movePiece = (
+  piece: Piece,
+  direction: 'down' | 'left' | 'right'
+): Piece['coords'] => {
+  const unstringifyCoord = (coord: string): number[] =>
+    coord.split('|').map(Number)
+
+  const moveCoordDown = (coord: string): string => {
+    const [row, col] = unstringifyCoord(coord)
+    return stringifyCoord({ row: row + 1, col })
+  }
+
+  const moveCoordLeft = (coord: string): string => {
+    const [row, col] = unstringifyCoord(coord)
+    return stringifyCoord({ row, col: col - 1 })
+  }
+
+  const moveCoordRight = (coord: string): string => {
+    const [row, col] = unstringifyCoord(coord)
+    return stringifyCoord({ row, col: col + 1 })
+  }
+
+  const moveCoord = {
+    down: moveCoordDown,
+    left: moveCoordLeft,
+    right: moveCoordRight
+  }[direction]
+
   const newCoords = new Set<string>()
-  piece.coords.forEach((coord) => {
-    const [row, col] = coord.split('|').map(Number)
-    newCoords.add(stringifyCoord({ row: row + 1, col }))
-  })
+
+  piece.coords.forEach((coord) => newCoords?.add(moveCoord(coord)))
+
   return newCoords
 }

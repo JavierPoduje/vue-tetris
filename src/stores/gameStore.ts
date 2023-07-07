@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { randomPiece, movePieceDown } from './helpers'
+import { randomPiece, movePiece } from './helpers'
 import { defineStore } from 'pinia'
 import type { Piece } from '@/models'
 
@@ -18,9 +18,23 @@ export const useGameStore = defineStore('gameStore', () => {
   const piece = ref<Piece>(randomPiece())
 
   const tick = () => {
-    console.log("piece.value.coords: ", piece.value.coords);
-    piece.value.coords = movePieceDown(piece.value)
-    console.log("piece.value.coords: ", piece.value.coords);
+    console.log('tick!')
+  }
+
+  const rotate = () => {
+    console.log('rotating!')
+  }
+
+  const moveDown = () => {
+    piece.value.coords = movePiece(piece.value, 'down')
+  }
+
+  const moveLeft = () => {
+    piece.value.coords = movePiece(piece.value, 'left')
+  }
+
+  const moveRight = () => {
+    piece.value.coords = movePiece(piece.value, 'right')
   }
 
   return {
@@ -29,6 +43,10 @@ export const useGameStore = defineStore('gameStore', () => {
     piece,
     nextPiece,
     // actions
-    tick
+    tick,
+    rotate,
+    moveDown,
+    moveLeft,
+    moveRight
   }
 })

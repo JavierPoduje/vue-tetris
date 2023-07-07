@@ -10,12 +10,35 @@
 </template>
 
 <script setup lang="ts">
+  import { onMounted } from 'vue'
   import { useGameStore } from './stores/gameStore.ts'
   import GameGrid from './components/GameGrid.vue'
   import ShowcaseGrid from './components/ShowcaseGrid.vue'
   import GameButton from './components/GameButton.vue'
 
   const store = useGameStore()
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    const key = e?.key?.toLowerCase()
+    switch (key) {
+      case 'arrowup':
+        store?.rotate()
+        break
+      case 'arrowdown':
+        store?.moveDown()
+        break
+      case 'arrowleft':
+        store?.moveLeft()
+        break
+      case 'arrowright':
+        store?.moveRight()
+        break
+    }
+  }
+
+  onMounted(() => {
+    window.addEventListener('keydown', onKeyDown)
+  })
 </script>
 
 <style scoped lang="scss">
@@ -33,6 +56,5 @@
     align-items: flex-start;
     gap: 3rem;
     width: 100%;
-    height: 100vh;
   }
 </style>
