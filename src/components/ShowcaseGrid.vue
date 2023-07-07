@@ -1,19 +1,33 @@
 <template>
   <section class="grid">
     <div class="grid__container">
-      <div v-for="{ row, col } in grid" :key="`${row}-${col}`" class="cell" />
+      <div
+        v-for="{ row, col } in grid"
+        :key="`${row}-${col}`"
+        class="cell"
+        :class="stylePiece(row, col)"
+      />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+  import pieceShowcase from '../utils/pieceShowcase'
+  import stringifyCoord from '../utils/stringifyCoord'
+
   const props = defineProps<{
-    nextPiece: Piece
-    required: true
+    nextPiece: { type: Object; required: true }
   }>()
+
+  const pieceSet = pieceShowcase(props.nextPiece)
+
+  const stylePiece = (row: number, col: number): string => {
+    return pieceSet?.has(stringifyCoord({ row, col })) && 'cell--filled'
+  }
+
   const grid = new Array(4)
     .fill()
-    .map(() => new Array(4).fill(0))
+    .map(() => new Array(3).fill(0))
     .reduce((acc, row, rowIdx) => {
       return acc?.concat(
         row?.map((cell, cellIdx) => ({
@@ -28,16 +42,18 @@
   @import '../assets/variables.scss';
 
   $cell-size: 30px;
-  $grid-size: 4;
+  $grid-size: 5;
+  $cols: 3;
+  $rows: 4;
 
   .grid {
     background-color: map-get($colors, surface0);
-    width: calc(calc($cell-size * $grid-size) + calc($grid-size * 1px));
-    height: calc(calc($cell-size * $grid-size) + calc($grid-size * 1px));
+    width: calc(calc($cell-size * $cols) + calc($cols * 1px));
+    height: calc(calc($cell-size * $rows) + calc($rows * 1px));
     &__container {
       display: grid;
-      grid-template-columns: repeat($grid-size, 1fr);
-      grid-template-rows: repeat($grid-size, 1fr);
+      grid-template-columns: repeat($cols, 1fr);
+      grid-template-rows: repeat($rows, 1fr);
       grid-gap: 1px 1px;
       border: 1px solid map-get($colors, surface1);
 
@@ -48,6 +64,10 @@
         border: 1px solid map-get($colors, surface2);
         color: map-get($colors, blue);
         font-size: 8px;
+
+        &--filled {
+          background-color: map-get($colors, mauve);
+        }
       }
     }
   }
