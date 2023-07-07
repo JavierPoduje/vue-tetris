@@ -20,18 +20,20 @@
 
   const onKeyDown = (e: KeyboardEvent) => {
     const key = e?.key?.toLowerCase()
+    const isShiftDown = Boolean(e?.shiftKey)
+
     switch (key) {
       case 'arrowup':
-        store?.rotate()
+        store?.rotate(!isShiftDown)
         break
       case 'arrowdown':
-        store?.moveDown()
+        store?.moveDown(!isShiftDown)
         break
       case 'arrowleft':
-        store?.moveLeft()
+        store?.moveLeft(!isShiftDown)
         break
       case 'arrowright':
-        store?.moveRight()
+        store?.moveRight(!isShiftDown)
         break
     }
   }

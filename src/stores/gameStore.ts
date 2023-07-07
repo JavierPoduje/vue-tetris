@@ -1,7 +1,8 @@
 import { ref } from 'vue'
-import { randomPiece, movePiece } from './helpers'
 import { defineStore } from 'pinia'
-import type { Piece } from '@/models'
+import { randomPiece, movePiece } from './helpers'
+import rotatePiece from '@/utils/rotatePiece'
+import { type Piece, DirectionEnum } from '@/models'
 
 // ref()s become state properties
 // computed()s become getters
@@ -21,20 +22,35 @@ export const useGameStore = defineStore('gameStore', () => {
     console.log('tick!')
   }
 
-  const rotate = () => {
-    console.log('rotating!')
+  const rotate = (clockwise: boolean) => {
+    piece.value.coords = rotatePiece(piece.value, clockwise)
+    if (piece.value.lookingTo === DirectionEnum.Up) {
+      piece.value.lookingTo = clockwise
+        ? DirectionEnum.Right
+        : DirectionEnum.Left
+    } else if (piece.value.lookingTo === DirectionEnum.Right) {
+      piece.value.lookingTo = clockwise ? DirectionEnum.Down : DirectionEnum.Up
+    } else if (piece.value.lookingTo === DirectionEnum.Down) {
+      piece.value.lookingTo = clockwise
+        ? DirectionEnum.Left
+        : DirectionEnum.Right
+    } else if (piece.value.lookingTo === DirectionEnum.Left) {
+      piece.value.lookingTo = clockwise ? DirectionEnum.Up : DirectionEnum.Down
+    } else {
+      throw new Error(`Unknown piece.lookingTo: ${piece.value.lookingTo}`)
+    }
   }
 
   const moveDown = () => {
-    piece.value.coords = movePiece(piece.value, 'down')
+    piece.value.coords = movePiece(piece.value, DirectionEnum.Down)
   }
 
   const moveLeft = () => {
-    piece.value.coords = movePiece(piece.value, 'left')
+    piece.value.coords = movePiece(piece.value, DirectionEnum.Left)
   }
 
   const moveRight = () => {
-    piece.value.coords = movePiece(piece.value, 'right')
+    piece.value.coords = movePiece(piece.value, DirectionEnum.Right)
   }
 
   return {

@@ -18,8 +18,21 @@ export enum PieceEnum {
   Z = 'Z'
 }
 
+export enum DirectionEnum {
+  Up = 'up',
+  Down = 'down',
+  Left = 'left',
+  Right = 'right'
+}
+
 export interface Piece {
   type: PieceEnum
   color: PieceColorEnum
   coords: Set<string>
+  lookingTo: DirectionEnum
+}
+
+export interface Coord {
+  row: number
+  col: number
 }
