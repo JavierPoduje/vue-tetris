@@ -25,14 +25,14 @@ export enum DirectionEnum {
   Right = 'right'
 }
 
-export interface Piece {
-  type: PieceEnum
-  color: PieceColorEnum
-  coords: Set<string>
-  lookingTo: DirectionEnum
-}
-
 export interface Coord {
   row: number
   col: number
+}
+
+export interface Piece {
+  type: PieceEnum
+  color: PieceColorEnum
+  coords: Set<Coord>
+  lookingTo: DirectionEnum
 }

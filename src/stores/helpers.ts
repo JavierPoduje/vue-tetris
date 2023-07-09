@@ -5,59 +5,57 @@ import {
   DirectionEnum,
   type Coord
 } from '@/models'
-import stringifyCoord from '@/utils/stringifyCoord'
-import unstringifyCoord from '@/utils/unstringifyCoord'
 
-const initialCoordsByPiece = (pieceType: PieceEnum): Set<string> => {
+const initialCoordsByPiece = (pieceType: PieceEnum): Piece['coords'] => {
   switch (pieceType) {
     case PieceEnum.I:
       return new Set([
-        stringifyCoord({ row: -3, col: 4 }),
-        stringifyCoord({ row: -2, col: 4 }),
-        stringifyCoord({ row: -1, col: 4 }),
-        stringifyCoord({ row: 0, col: 4 })
+        { row: -3, col: 4 },
+        { row: -2, col: 4 },
+        { row: -1, col: 4 },
+        { row: 0, col: 4 }
       ])
     case PieceEnum.J:
       return new Set([
-        stringifyCoord({ row: -2, col: 5 }),
-        stringifyCoord({ row: -1, col: 5 }),
-        stringifyCoord({ row: 0, col: 5 }),
-        stringifyCoord({ row: 0, col: 4 })
+        { row: -2, col: 5 },
+        { row: -1, col: 5 },
+        { row: 0, col: 5 },
+        { row: 0, col: 4 }
       ])
     case PieceEnum.L:
       return new Set([
-        stringifyCoord({ row: -2, col: 4 }),
-        stringifyCoord({ row: -1, col: 4 }),
-        stringifyCoord({ row: 0, col: 4 }),
-        stringifyCoord({ row: 0, col: 5 })
+        { row: -2, col: 4 },
+        { row: -1, col: 4 },
+        { row: 0, col: 4 },
+        { row: 0, col: 5 }
       ])
     case PieceEnum.O:
       return new Set([
-        stringifyCoord({ row: -1, col: 4 }),
-        stringifyCoord({ row: -1, col: 5 }),
-        stringifyCoord({ row: 0, col: 4 }),
-        stringifyCoord({ row: 0, col: 5 })
+        { row: -1, col: 4 },
+        { row: -1, col: 5 },
+        { row: 0, col: 4 },
+        { row: 0, col: 5 }
       ])
     case PieceEnum.S:
       return new Set([
-        stringifyCoord({ row: -1, col: 5 }),
-        stringifyCoord({ row: -1, col: 4 }),
-        stringifyCoord({ row: 0, col: 4 }),
-        stringifyCoord({ row: 0, col: 3 })
+        { row: -1, col: 5 },
+        { row: -1, col: 4 },
+        { row: 0, col: 4 },
+        { row: 0, col: 3 }
       ])
     case PieceEnum.T:
       return new Set([
-        stringifyCoord({ row: -1, col: 4 }),
-        stringifyCoord({ row: 0, col: 4 }),
-        stringifyCoord({ row: 0, col: 5 }),
-        stringifyCoord({ row: 0, col: 3 })
+        { row: -1, col: 4 },
+        { row: 0, col: 4 },
+        { row: 0, col: 5 },
+        { row: 0, col: 3 }
       ])
     case PieceEnum.Z:
       return new Set([
-        stringifyCoord({ row: -1, col: 3 }),
-        stringifyCoord({ row: -1, col: 4 }),
-        stringifyCoord({ row: 0, col: 4 }),
-        stringifyCoord({ row: 0, col: 5 })
+        { row: -1, col: 3 },
+        { row: -1, col: 4 },
+        { row: 0, col: 4 },
+        { row: 0, col: 5 }
       ])
     default:
       throw new Error(`Unknown piece type: ${pieceType}`)
@@ -106,22 +104,10 @@ export const movePiece = (
     throw new Error('Cannot move piece up')
   }
 
-  const moveCoordDown = ({ row, col }: Coord): string => {
-    return stringifyCoord({ row: row + 1, col })
-  }
-
-  const moveCoordLeft = ({ row, col }: Coord): string => {
-    return stringifyCoord({ row, col: col - 1 })
-  }
-
-  const moveCoordRight = ({ row, col }: Coord): string => {
-    return stringifyCoord({ row, col: col + 1 })
-  }
-
   const moveCoord = {
-    down: moveCoordDown,
-    left: moveCoordLeft,
-    right: moveCoordRight
+    down: ({ row, col }: Coord): Coord => ({ row: row + 1, col }),
+    left: ({ row, col }: Coord): Coord => ({ row, col: col - 1 }),
+    right: ({ row, col }: Coord): Coord => ({ row, col: col + 1 })
   }[direction]
 
   const inBounds = ({ row, col }: Coord, direction: DirectionEnum): boolean => {
@@ -137,15 +123,14 @@ export const movePiece = (
   }
 
   // convert the piece's coords to an array of Coord objects
-  const pieceCoords: Coord[] = []
-  piece.coords.forEach((coord) => pieceCoords.push(unstringifyCoord(coord)))
+  const pieceCoords: Coord[] = Array.from(piece.coords ?? [])
 
   // if every piece is in bounds, move the piece
   if (pieceCoords.every((coord) => inBounds(coord, direction))) {
     return pieceCoords?.reduce((acc, coord) => {
       acc.add(moveCoord(coord))
       return acc
-    }, new Set<string>())
+    }, new Set<Coord>())
   }
 
   // otherwise, return the original piece

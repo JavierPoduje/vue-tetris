@@ -24,17 +24,19 @@
     return store?.board?.reduce(
       (acc, row, rowIdx) =>
         acc?.concat(
-          row?.map((cell, cellIdx) => ({
-            row: rowIdx,
-            col: cellIdx
-          }))
+          row?.map((cell, cellIdx) => ({ row: rowIdx, col: cellIdx }))
         ),
       []
     )
   })
 
-  const isPiece = (row: number, col: number) =>
-    store?.piece?.coords?.has(stringifyCoord({ row, col }))
+  const stringifyPieceCoords = computed(() => {
+    return new Set(Array.from(store?.piece?.coords)?.map(stringifyCoord))
+  })
+
+  const isPiece = (row: number, col: number) => {
+    return stringifyPieceCoords?.value?.has(stringifyCoord({ row, col }))
+  }
 </script>
 
 <style scoped lang="scss">

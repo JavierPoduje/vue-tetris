@@ -4,10 +4,6 @@ import { randomPiece, movePiece } from './helpers'
 import rotatePiece from '@/utils/rotatePiece'
 import { type Piece, DirectionEnum } from '@/models'
 
-// ref()s become state properties
-// computed()s become getters
-// function()s become actions
-
 const BOARD_COLS = 10
 const BOARD_ROWS = 20
 

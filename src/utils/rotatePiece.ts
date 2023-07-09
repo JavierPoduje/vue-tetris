@@ -1,6 +1,4 @@
 import { type Piece, DirectionEnum, type Coord } from '@/models'
-import stringifyCoord from '@/utils/stringifyCoord'
-import unstringifyCoord from '@/utils/unstringifyCoord'
 
 const add = (a: number) => (b: number) => b + a
 const sub = (a: number) => (b: number) => b - a
@@ -29,15 +27,15 @@ const setCoords = (
 
 // sort by row, then by column
 const sortCoords = (coords: Piece['coords']) =>
-  Array.from(coords)
-    .map(unstringifyCoord)
-    .sort(({ row: aRow, col: aCol }, { row: bRow, col: bCol }) => {
+  Array.from(coords).sort(
+    ({ row: aRow, col: aCol }, { row: bRow, col: bCol }) => {
       if (aRow < bRow) return -1
       if (aRow > bRow) return 1
       if (aCol < bCol) return -1
       if (aCol > bCol) return 1
       return 0
-    })
+    }
+  )
 
 export const rotateI = (piece: Piece): Coord[] => {
   const coords = sortCoords(piece.coords)
@@ -364,19 +362,19 @@ export const rotateZ = (piece: Piece): Coord[] => {
 const rotatePiece = (piece: Piece, clockwise: boolean): Piece['coords'] => {
   switch (piece.type) {
     case 'I':
-      return new Set(rotateI(piece)?.map(stringifyCoord))
+      return new Set(rotateI(piece))
     case 'J':
-      return new Set(rotateJ(piece, clockwise)?.map(stringifyCoord))
+      return new Set(rotateJ(piece, clockwise))
     case 'L':
-      return new Set(rotateL(piece, clockwise)?.map(stringifyCoord))
+      return new Set(rotateL(piece, clockwise))
     case 'O':
-      return new Set(rotateO(piece)?.map(stringifyCoord))
+      return new Set(rotateO(piece))
     case 'S':
-      return new Set(rotateS(piece)?.map(stringifyCoord))
+      return new Set(rotateS(piece))
     case 'T':
-      return new Set(rotateT(piece, clockwise)?.map(stringifyCoord))
+      return new Set(rotateT(piece, clockwise))
     case 'Z':
-      return new Set(rotateZ(piece)?.map(stringifyCoord))
+      return new Set(rotateZ(piece))
     default:
       throw new Error(`Unknown piece type: ${piece.type}`)
   }
