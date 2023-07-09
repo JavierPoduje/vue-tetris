@@ -39,7 +39,7 @@ const sortCoords = (coords: Piece['coords']) =>
       return 0
     })
 
-const rotateI = (piece: Piece): Piece['coords'] => {
+export const rotateI = (piece: Piece): Coord[] => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -73,10 +73,10 @@ const rotateI = (piece: Piece): Piece['coords'] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return new Set(newCoords?.map(stringifyCoord))
+  return newCoords
 }
 
-const rotateJ = (piece: Piece, clockwise: boolean): Piece['coords'] => {
+export const rotateJ = (piece: Piece, clockwise: boolean): Coord[] => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -164,10 +164,10 @@ const rotateJ = (piece: Piece, clockwise: boolean): Piece['coords'] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return new Set(newCoords?.map(stringifyCoord))
+  return newCoords
 }
 
-const rotateL = (piece: Piece, clockwise: boolean): Piece['coords'] => {
+export const rotateL = (piece: Piece, clockwise: boolean): Coord[] => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -255,14 +255,12 @@ const rotateL = (piece: Piece, clockwise: boolean): Piece['coords'] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return new Set(newCoords?.map(stringifyCoord))
+  return newCoords
 }
 
-const rotateO = (piece: Piece): Piece['coords'] => {
-  return piece.coords
-}
+export const rotateO = (piece: Piece): Coord[] => sortCoords(piece.coords)
 
-const rotateS = (piece: Piece): Piece['coords'] => {
+export const rotateS = (piece: Piece): Coord[] => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -296,10 +294,10 @@ const rotateS = (piece: Piece): Piece['coords'] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return new Set(newCoords?.map(stringifyCoord))
+  return newCoords
 }
 
-const rotateT = (piece: Piece, clockwise: boolean): Piece['coords'] => {
+export const rotateT = (piece: Piece, clockwise: boolean): Coord[] => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -323,10 +321,10 @@ const rotateT = (piece: Piece, clockwise: boolean): Piece['coords'] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return new Set(newCoords?.map(stringifyCoord))
+  return newCoords
 }
 
-const rotateZ = (piece: Piece): Piece['coords'] => {
+export const rotateZ = (piece: Piece): Coord[] => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -360,25 +358,25 @@ const rotateZ = (piece: Piece): Piece['coords'] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return new Set(newCoords?.map(stringifyCoord))
+  return newCoords
 }
 
 const rotatePiece = (piece: Piece, clockwise: boolean): Piece['coords'] => {
   switch (piece.type) {
     case 'I':
-      return rotateI(piece)
+      return new Set(rotateI(piece)?.map(stringifyCoord))
     case 'J':
-      return rotateJ(piece, clockwise)
+      return new Set(rotateJ(piece, clockwise)?.map(stringifyCoord))
     case 'L':
-      return rotateL(piece, clockwise)
+      return new Set(rotateL(piece, clockwise)?.map(stringifyCoord))
     case 'O':
-      return rotateO(piece)
+      return new Set(rotateO(piece)?.map(stringifyCoord))
     case 'S':
-      return rotateS(piece)
+      return new Set(rotateS(piece)?.map(stringifyCoord))
     case 'T':
-      return rotateT(piece, clockwise)
+      return new Set(rotateT(piece, clockwise)?.map(stringifyCoord))
     case 'Z':
-      return rotateZ(piece)
+      return new Set(rotateZ(piece)?.map(stringifyCoord))
     default:
       throw new Error(`Unknown piece type: ${piece.type}`)
   }

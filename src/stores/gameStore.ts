@@ -42,15 +42,30 @@ export const useGameStore = defineStore('gameStore', () => {
   }
 
   const moveDown = () => {
-    piece.value.coords = movePiece(piece.value, DirectionEnum.Down)
+    piece.value.coords = movePiece(
+      piece.value,
+      DirectionEnum.Down,
+      BOARD_ROWS,
+      BOARD_COLS
+    )
   }
 
   const moveLeft = () => {
-    piece.value.coords = movePiece(piece.value, DirectionEnum.Left)
+    piece.value.coords = movePiece(
+      piece.value,
+      DirectionEnum.Left,
+      BOARD_ROWS,
+      BOARD_COLS
+    )
   }
 
   const moveRight = () => {
-    piece.value.coords = movePiece(piece.value, DirectionEnum.Right)
+    piece.value.coords = movePiece(
+      piece.value,
+      DirectionEnum.Right,
+      BOARD_ROWS,
+      BOARD_COLS
+    )
   }
 
   return {

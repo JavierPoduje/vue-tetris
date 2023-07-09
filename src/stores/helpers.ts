@@ -1,4 +1,10 @@
-import { PieceColorEnum, PieceEnum, type Piece, DirectionEnum } from '@/models'
+import {
+  PieceColorEnum,
+  PieceEnum,
+  type Piece,
+  DirectionEnum,
+  type Coord
+} from '@/models'
 import stringifyCoord from '@/utils/stringifyCoord'
 import unstringifyCoord from '@/utils/unstringifyCoord'
 
@@ -89,26 +95,26 @@ export const randomPiece = (): Piece => {
   }
 }
 
+// pieces are only moved if the movement keeps them inside the board
 export const movePiece = (
   piece: Piece,
-  direction: DirectionEnum
+  direction: DirectionEnum,
+  numberOfRows: number,
+  numberOfCols: number
 ): Piece['coords'] => {
   if (direction === DirectionEnum.Up) {
     throw new Error('Cannot move piece up')
   }
 
-  const moveCoordDown = (coord: string): string => {
-    const { row, col } = unstringifyCoord(coord)
+  const moveCoordDown = ({ row, col }: Coord): string => {
     return stringifyCoord({ row: row + 1, col })
   }
 
-  const moveCoordLeft = (coord: string): string => {
-    const { row, col } = unstringifyCoord(coord)
+  const moveCoordLeft = ({ row, col }: Coord): string => {
     return stringifyCoord({ row, col: col - 1 })
   }
 
-  const moveCoordRight = (coord: string): string => {
-    const { row, col } = unstringifyCoord(coord)
+  const moveCoordRight = ({ row, col }: Coord): string => {
     return stringifyCoord({ row, col: col + 1 })
   }
 
@@ -118,9 +124,30 @@ export const movePiece = (
     right: moveCoordRight
   }[direction]
 
-  const newCoords = new Set<string>()
+  const inBounds = ({ row, col }: Coord, direction: DirectionEnum): boolean => {
+    if (direction === DirectionEnum.Down) {
+      return row < numberOfRows - 1
+    } else if (direction === DirectionEnum.Left) {
+      return col > 0
+    } else if (direction === DirectionEnum.Right) {
+      return col < numberOfCols - 1
+    } else {
+      throw new Error(`Unknown direction: ${direction}`)
+    }
+  }
 
-  piece.coords.forEach((coord) => newCoords?.add(moveCoord(coord)))
+  // convert the piece's coords to an array of Coord objects
+  const pieceCoords: Coord[] = []
+  piece.coords.forEach((coord) => pieceCoords.push(unstringifyCoord(coord)))
 
-  return newCoords
+  // if every piece is in bounds, move the piece
+  if (pieceCoords.every((coord) => inBounds(coord, direction))) {
+    return pieceCoords?.reduce((acc, coord) => {
+      acc.add(moveCoord(coord))
+      return acc
+    }, new Set<string>())
+  }
+
+  // otherwise, return the original piece
+  return piece?.coords
 }
