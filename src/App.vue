@@ -56,8 +56,6 @@
   })
 
   watchEffect(() => {
-    console.log('store?.state: ', store?.state)
-    console.log('looping?.value: ', looping?.value)
     if (store?.state === StateEnum.Playing && !looping.value) {
       looping.value = true
       setTimeout(loop, store?.tickInterval)

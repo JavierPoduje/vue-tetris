@@ -1,3 +1,4 @@
+import coordsInBounds from './coordsInBounds'
 import { type Piece, DirectionEnum, type Coord } from '@/models'
 
 const add = (a: number) => (b: number) => b + a
@@ -37,7 +38,11 @@ const sortCoords = (coords: Piece['coords']) =>
     }
   )
 
-export const rotateI = (piece: Piece): Coord[] => {
+export const rotateI = (
+  piece: Piece,
+  rows: number,
+  cols: number
+): { coords: Set<Coord>; rotated: boolean } => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -71,10 +76,19 @@ export const rotateI = (piece: Piece): Coord[] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return newCoords
+  const inBounds = coordsInBounds(newCoords, rows, cols)
+  return {
+    coords: new Set(inBounds ? newCoords : coords),
+    rotated: inBounds
+  }
 }
 
-export const rotateJ = (piece: Piece, clockwise: boolean): Coord[] => {
+export const rotateJ = (
+  piece: Piece,
+  clockwise: boolean,
+  rows: number,
+  cols: number
+): { coords: Set<Coord>; rotated: boolean } => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -162,10 +176,19 @@ export const rotateJ = (piece: Piece, clockwise: boolean): Coord[] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return newCoords
+  const inBounds = coordsInBounds(newCoords, rows, cols)
+  return {
+    coords: new Set(inBounds ? newCoords : coords),
+    rotated: inBounds
+  }
 }
 
-export const rotateL = (piece: Piece, clockwise: boolean): Coord[] => {
+export const rotateL = (
+  piece: Piece,
+  clockwise: boolean,
+  rows: number,
+  cols: number
+): { coords: Set<Coord>; rotated: boolean } => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -253,12 +276,25 @@ export const rotateL = (piece: Piece, clockwise: boolean): Coord[] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return newCoords
+  const inBounds = coordsInBounds(newCoords, rows, cols)
+  return {
+    coords: new Set(inBounds ? newCoords : coords),
+    rotated: inBounds
+  }
 }
 
-export const rotateO = (piece: Piece): Coord[] => sortCoords(piece.coords)
+export const rotateO = (
+  piece: Piece
+): { coords: Set<Coord>; rotated: boolean } => ({
+  coords: new Set(sortCoords(piece.coords)),
+  rotated: false
+})
 
-export const rotateS = (piece: Piece): Coord[] => {
+export const rotateS = (
+  piece: Piece,
+  rows: number,
+  cols: number
+): { coords: Set<Coord>; rotated: boolean } => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -292,10 +328,19 @@ export const rotateS = (piece: Piece): Coord[] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return newCoords
+  const inBounds = coordsInBounds(newCoords, rows, cols)
+  return {
+    coords: new Set(inBounds ? newCoords : coords),
+    rotated: inBounds
+  }
 }
 
-export const rotateT = (piece: Piece, clockwise: boolean): Coord[] => {
+export const rotateT = (
+  piece: Piece,
+  clockwise: boolean,
+  rows: number,
+  cols: number
+): { coords: Set<Coord>; rotated: boolean } => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -319,10 +364,18 @@ export const rotateT = (piece: Piece, clockwise: boolean): Coord[] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return newCoords
+  const inBounds = coordsInBounds(newCoords, rows, cols)
+  return {
+    coords: new Set(inBounds ? newCoords : coords),
+    rotated: inBounds
+  }
 }
 
-export const rotateZ = (piece: Piece): Coord[] => {
+export const rotateZ = (
+  piece: Piece,
+  rows: number,
+  cols: number
+): { coords: Set<Coord>; rotated: boolean } => {
   const coords = sortCoords(piece.coords)
   let newCoords = []
 
@@ -356,25 +409,34 @@ export const rotateZ = (piece: Piece): Coord[] => {
     throw new Error(`Unknown piece.lookingTo: ${piece.lookingTo}`)
   }
 
-  return newCoords
+  const inBounds = coordsInBounds(newCoords, rows, cols)
+  return {
+    coords: new Set(inBounds ? newCoords : coords),
+    rotated: inBounds
+  }
 }
 
-const rotatePiece = (piece: Piece, clockwise: boolean): Piece['coords'] => {
+const rotatePiece = (
+  piece: Piece,
+  clockwise: boolean,
+  rows: number,
+  cols: number
+): { coords: Piece['coords']; rotated: boolean } => {
   switch (piece.type) {
     case 'I':
-      return new Set(rotateI(piece))
+      return rotateI(piece, rows, cols)
     case 'J':
-      return new Set(rotateJ(piece, clockwise))
+      return rotateJ(piece, clockwise, rows, cols)
     case 'L':
-      return new Set(rotateL(piece, clockwise))
+      return rotateL(piece, clockwise, rows, cols)
     case 'O':
-      return new Set(rotateO(piece))
+      return rotateO(piece)
     case 'S':
-      return new Set(rotateS(piece))
+      return rotateS(piece, rows, cols)
     case 'T':
-      return new Set(rotateT(piece, clockwise))
+      return rotateT(piece, clockwise, rows, cols)
     case 'Z':
-      return new Set(rotateZ(piece))
+      return rotateZ(piece, rows, cols)
     default:
       throw new Error(`Unknown piece type: ${piece.type}`)
   }

@@ -28,7 +28,22 @@ export const useGameStore = defineStore('gameStore', () => {
   }
 
   const rotate = (clockwise: boolean) => {
-    piece.value.coords = rotatePiece(piece.value, clockwise)
+    const { coords: newCoords, rotated } = rotatePiece(
+      piece.value,
+      clockwise,
+      BOARD_ROWS,
+      BOARD_COLS
+    )
+
+    // if the piece was not rotated, do nothing
+    if (!rotated) {
+      return
+    }
+
+    // otherwise, update its coords
+    piece.value.coords = newCoords
+
+    // and update the direction it's looking to (lookingTo property)
     if (piece.value.lookingTo === DirectionEnum.Up) {
       piece.value.lookingTo = clockwise
         ? DirectionEnum.Right
