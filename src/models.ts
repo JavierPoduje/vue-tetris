@@ -30,6 +30,12 @@ export interface Coord {
   col: number
 }
 
+export enum StateEnum {
+  Playing = 'playing',
+  Paused = 'paused',
+  Gameover = 'gameover'
+}
+
 export interface Piece {
   type: PieceEnum
   color: PieceColorEnum

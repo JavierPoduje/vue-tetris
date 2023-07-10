@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { randomPiece, movePiece } from './helpers'
 import rotatePiece from '@/utils/rotatePiece'
-import { type Piece, DirectionEnum } from '@/models'
+import { type Piece, DirectionEnum, StateEnum } from '@/models'
 
 const BOARD_COLS = 10
 const BOARD_ROWS = 20
@@ -13,9 +13,18 @@ export const useGameStore = defineStore('gameStore', () => {
   )
   const nextPiece = ref<Piece>(randomPiece())
   const piece = ref<Piece>(randomPiece())
+  const state = ref<StateEnum>(StateEnum.Playing)
+  const tickInterval = ref<number>(350)
 
   const tick = () => {
-    console.log('tick!')
+    const canMovePieceDown = Array.from(piece.value.coords).every(
+      ({ row }) => row + 1 < BOARD_ROWS
+    )
+    if (canMovePieceDown) {
+      // moveDown()
+    } else {
+      console.log('here!')
+    }
   }
 
   const rotate = (clockwise: boolean) => {
@@ -67,13 +76,15 @@ export const useGameStore = defineStore('gameStore', () => {
   return {
     // props
     board,
-    piece,
     nextPiece,
+    piece,
+    state,
+    tickInterval,
     // actions
-    tick,
-    rotate,
     moveDown,
     moveLeft,
-    moveRight
+    moveRight,
+    rotate,
+    tick
   }
 })

@@ -20,15 +20,11 @@
 
   const store = useGameStore()
 
-  const grid = computed(() => {
-    return store?.board?.reduce(
-      (acc, row, rowIdx) =>
-        acc?.concat(
-          row?.map((cell, cellIdx) => ({ row: rowIdx, col: cellIdx }))
-        ),
-      []
-    )
-  })
+  const grid = store?.board?.reduce(
+    (acc, row, rowIdx) =>
+      acc?.concat(row?.map((cell, cellIdx) => ({ row: rowIdx, col: cellIdx }))),
+    []
+  )
 
   const stringifyPieceCoords = computed(() => {
     return new Set(Array.from(store?.piece?.coords)?.map(stringifyCoord))

@@ -10,13 +10,26 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from 'vue'
+  import { ref, onMounted, watchEffect } from 'vue'
   import { useGameStore } from './stores/gameStore.ts'
   import GameGrid from './components/GameGrid.vue'
   import ShowcaseGrid from './components/ShowcaseGrid.vue'
   import GameButton from './components/GameButton.vue'
+  import { StateEnum } from './models'
 
   const store = useGameStore()
+  const looping = ref(false)
+
+  const loop = () => {
+    store.tick()
+
+    // if the game change its state, stop the loop
+    if (store?.state === StateEnum.Running) {
+      setTimeout(loop, store?.tickInterval)
+    } else {
+      looping.value = false
+    }
+  }
 
   const onKeyDown = (e: KeyboardEvent) => {
     const key = e?.key?.toLowerCase()
@@ -40,6 +53,15 @@
 
   onMounted(() => {
     window.addEventListener('keydown', onKeyDown)
+  })
+
+  watchEffect(() => {
+    console.log('store?.state: ', store?.state)
+    console.log('looping?.value: ', looping?.value)
+    if (store?.state === StateEnum.Playing && !looping.value) {
+      looping.value = true
+      setTimeout(loop, store?.tickInterval)
+    }
   })
 </script>
 
