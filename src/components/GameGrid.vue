@@ -5,7 +5,7 @@
         v-for="{ row, col } in grid"
         :key="`${row}-${col}`"
         class="cell"
-        :class="isPiece(row, col) && `cell--${store?.piece?.color}`"
+        :class="getCellStyle(row, col)"
       >
         {{ row }} {{ col }}
       </div>
@@ -30,8 +30,16 @@
     return new Set(Array.from(store?.piece?.coords)?.map(stringifyCoord))
   })
 
-  const isPiece = (row: number, col: number) => {
-    return stringifyPieceCoords?.value?.has(stringifyCoord({ row, col }))
+  const getCellStyle = (row: number, col: number) => {
+    const boardCell = store?.boardWithPieces?.[row]?.[col]
+    const isPiece = stringifyPieceCoords?.value?.has(
+      stringifyCoord({ row, col })
+    )
+    if (isPiece) {
+      return `cell--${store?.piece?.color}`
+    } else if (boardCell?.used) {
+      return `cell--${boardCell?.color}`
+    }
   }
 </script>
 
