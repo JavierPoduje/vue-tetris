@@ -1,8 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { randomPiece, movePiece } from './helpers'
-import rotatePiece from '@/utils/rotatePiece'
-import { type Piece, DirectionEnum, StateEnum } from '@/models'
+import { getRandomPiece } from '@/utils'
+import { DirectionEnum, StateEnum, PieceColorEnum } from '@/models'
+import type { Piece } from '@/models/piece'
 
 const BOARD_COLS = 10
 const BOARD_ROWS = 20
@@ -11,86 +11,67 @@ export const useGameStore = defineStore('gameStore', () => {
   const board = ref<number[][]>(
     new Array(BOARD_ROWS).fill(new Array(BOARD_COLS).fill(0))
   )
-  const nextPiece = ref<Piece>(randomPiece())
-  const piece = ref<Piece>(randomPiece())
+  const nextPiece = ref<Piece>(getRandomPiece())
+  const piece = ref<Piece>(getRandomPiece())
   const state = ref<StateEnum>(StateEnum.Playing)
   const tickInterval = ref<number>(350)
+  const boardWithPieces = ref<{ color?: PieceColorEnum; used: boolean }[][]>(
+    board.value.map((row) => row.map(() => ({ used: false })))
+  )
+
+  const restartPiece = () => {
+    // add pice to the board with pieces
+    piece.value.coords.forEach(({ row, col }) => {
+      boardWithPieces.value[row][col] = {
+        color: piece.value.color,
+        used: true
+      }
+    })
+
+    // TODO: check if any rows are full (iterate over this until necessary)
+
+    // set the next piece as the current piece
+    piece.value = nextPiece.value
+    // set the next piece as a random piece
+    nextPiece.value = getRandomPiece()
+  }
 
   const tick = () => {
-    const canMovePieceDown = Array.from(piece.value.coords).every(
-      ({ row }) => row + 1 < BOARD_ROWS
-    )
-    if (canMovePieceDown) {
+    if (piece.value.moveIsValid(DirectionEnum.Down, BOARD_ROWS, BOARD_COLS)) {
       // moveDown()
     } else {
-      console.log('here!')
+      restartPiece()
     }
   }
 
   const rotate = (clockwise: boolean) => {
-    const { coords: newCoords, rotated } = rotatePiece(
-      piece.value,
-      clockwise,
-      BOARD_ROWS,
-      BOARD_COLS
-    )
-
-    // if the piece was not rotated, do nothing
-    if (!rotated) {
-      return
-    }
-
-    // otherwise, update its coords
-    piece.value.coords = newCoords
-
-    // and update the direction it's looking to (lookingTo property)
-    if (piece.value.lookingTo === DirectionEnum.Up) {
-      piece.value.lookingTo = clockwise
-        ? DirectionEnum.Right
-        : DirectionEnum.Left
-    } else if (piece.value.lookingTo === DirectionEnum.Right) {
-      piece.value.lookingTo = clockwise ? DirectionEnum.Down : DirectionEnum.Up
-    } else if (piece.value.lookingTo === DirectionEnum.Down) {
-      piece.value.lookingTo = clockwise
-        ? DirectionEnum.Left
-        : DirectionEnum.Right
-    } else if (piece.value.lookingTo === DirectionEnum.Left) {
-      piece.value.lookingTo = clockwise ? DirectionEnum.Up : DirectionEnum.Down
-    } else {
-      throw new Error(`Unknown piece.lookingTo: ${piece.value.lookingTo}`)
+    if (piece.value.rotationIsValid(clockwise, BOARD_ROWS, BOARD_COLS)) {
+      piece.value.rotate(clockwise)
     }
   }
 
   const moveDown = () => {
-    piece.value.coords = movePiece(
-      piece.value,
-      DirectionEnum.Down,
-      BOARD_ROWS,
-      BOARD_COLS
-    )
+    if (piece.value.moveIsValid(DirectionEnum.Down, BOARD_ROWS, BOARD_COLS)) {
+      piece.value.moveDown()
+    }
   }
 
   const moveLeft = () => {
-    piece.value.coords = movePiece(
-      piece.value,
-      DirectionEnum.Left,
-      BOARD_ROWS,
-      BOARD_COLS
-    )
+    if (piece.value.moveIsValid(DirectionEnum.Left, BOARD_ROWS, BOARD_COLS)) {
+      piece.value.moveLeft()
+    }
   }
 
   const moveRight = () => {
-    piece.value.coords = movePiece(
-      piece.value,
-      DirectionEnum.Right,
-      BOARD_ROWS,
-      BOARD_COLS
-    )
+    if (piece.value.moveIsValid(DirectionEnum.Right, BOARD_ROWS, BOARD_COLS)) {
+      piece.value.moveRight()
+    }
   }
 
   return {
     // props
     board,
+    boardWithPieces,
     nextPiece,
     piece,
     state,

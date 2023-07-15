@@ -16,7 +16,7 @@
 <script setup lang="ts">
   import { computed } from 'vue'
   import { useGameStore } from '../stores/gameStore'
-  import stringifyCoord from '../utils/stringifyCoord'
+  import { stringifyCoord } from '../utils'
 
   const store = useGameStore()
 

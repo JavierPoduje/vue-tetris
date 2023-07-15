@@ -1,3 +1,4 @@
+import coordInBounds from './coordInBounds'
 import type { Coord } from '@/models'
 
 const coordsInBounds = (
@@ -5,9 +6,7 @@ const coordsInBounds = (
   rows: number,
   cols: number
 ): boolean => {
-  const coordInBounds = ({ row, col }: Coord) =>
-    row >= 0 && row < rows && col >= 0 && col < cols
-  return coords?.every(coordInBounds)
+  return coords?.every((coord) => coordInBounds(coord, rows, cols))
 }
 
 export default coordsInBounds

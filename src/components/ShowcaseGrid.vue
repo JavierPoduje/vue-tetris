@@ -12,8 +12,7 @@
 </template>
 
 <script setup lang="ts">
-  import pieceShowcase from '../utils/pieceShowcase'
-  import stringifyCoord from '../utils/stringifyCoord'
+  import { pieceShowcase, stringifyCoord } from '@/utils'
 
   const props = defineProps<{
     nextPiece: { type: Object; required: true }
