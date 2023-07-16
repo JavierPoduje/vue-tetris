@@ -12,9 +12,9 @@
 <script setup lang="ts">
   import { ref, onMounted, watchEffect } from 'vue'
   import { useGameStore } from './stores/gameStore.ts'
-  import GameGrid from './components/GameGrid.vue'
+  import GameGrid from './controllers/game-grid.vue'
   import ShowcaseGrid from './controllers/showcase-grid.vue'
-  import GameButton from './components/GameButton.vue'
+  import GameButton from './components/game-button.vue'
   import { StateEnum } from './models'
 
   const store = useGameStore()

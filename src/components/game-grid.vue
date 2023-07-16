@@ -2,7 +2,7 @@
   <section class="grid">
     <div class="grid__container">
       <div
-        v-for="{ row, col } in grid"
+        v-for="{ row, col } in props.grid"
         :key="`${row}-${col}`"
         class="cell"
         :class="getCellStyle(row, col)"
@@ -14,29 +14,32 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from 'vue'
-  import { useGameStore } from '../stores/gameStore'
   import { stringifyCoord } from '../utils'
 
-  const store = useGameStore()
-
-  const grid = store?.board?.reduce(
-    (acc, row, rowIdx) =>
-      acc?.concat(row?.map((cell, cellIdx) => ({ row: rowIdx, col: cellIdx }))),
-    []
-  )
-
-  const stringifyPieceCoords = computed(() => {
-    return new Set(Array.from(store?.piece?.coords)?.map(stringifyCoord))
-  })
+  const props = defineProps<{
+    grid: {
+      type: Array
+      required: true
+    }
+    stringifyPieceCoords: {
+      type: Set<string>
+      required: true
+    }
+    board: {
+      type: Array
+      required: true
+    }
+    currentPiece: {
+      type: Piece
+      required: true
+    }
+  }>()
 
   const getCellStyle = (row: number, col: number) => {
-    const boardCell = store?.board[row][col]
-    const isPiece = stringifyPieceCoords?.value?.has(
-      stringifyCoord({ row, col })
-    )
+    const boardCell = props.board[row][col]
+    const isPiece = props.stringifyPieceCoords.has(stringifyCoord({ row, col }))
     if (isPiece) {
-      return `cell--${store?.piece?.color}`
+      return `cell--${props.currentPiece.color}`
     } else if (boardCell?.used) {
       return `cell--${boardCell?.color}`
     }
