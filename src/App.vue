@@ -5,7 +5,7 @@
   </header>
   <main class="main">
     <GameGrid />
-    <ShowcaseGrid :next-piece="store?.nextPiece" />
+    <ShowcaseGrid />
   </main>
 </template>
 
@@ -13,7 +13,7 @@
   import { ref, onMounted, watchEffect } from 'vue'
   import { useGameStore } from './stores/gameStore.ts'
   import GameGrid from './components/GameGrid.vue'
-  import ShowcaseGrid from './components/ShowcaseGrid.vue'
+  import ShowcaseGrid from './controllers/showcase-grid.vue'
   import GameButton from './components/GameButton.vue'
   import { StateEnum } from './models'
 

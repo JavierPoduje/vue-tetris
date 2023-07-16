@@ -12,42 +12,29 @@
 </template>
 
 <script setup lang="ts">
-  import { watch } from 'vue'
-  import { useGameStore } from '@/stores/gameStore'
-  import { pieceShowcase, stringifyCoord } from '@/utils'
+  import { stringifyCoord } from '@/utils'
 
-  const store = useGameStore()
-
-  const pieceSet = pieceShowcase(store.nextPiece)
+  const props = defineProps<{
+    pieceSet: {
+      type: Set
+      required: true
+    }
+    grid: {
+      type: Array
+      required: true
+    }
+    nextPiece: {
+      type: Piece
+      required: true
+    }
+  }>()
 
   const stylePiece = (row: number, col: number): string => {
     return (
-      pieceSet?.has(stringifyCoord({ row, col })) &&
-      `cell--${store.nextPiece.color}`
+      props.pieceSet.has(stringifyCoord({ row, col })) &&
+      `cell--${props.nextPiece.color}`
     )
   }
-
-  watch(
-    () => store.nextPiece,
-    () => {
-      pieceSet.clear()
-      pieceShowcase(store.nextPiece).forEach((coord) => {
-        pieceSet.add(coord)
-      })
-    }
-  )
-
-  const grid = new Array(4)
-    .fill()
-    .map(() => new Array(3).fill(0))
-    .reduce((acc, row, rowIdx) => {
-      return acc?.concat(
-        row?.map((cell, cellIdx) => ({
-          row: rowIdx,
-          col: cellIdx
-        }))
-      )
-    }, [])
 </script>
 
 <style scoped lang="scss">
