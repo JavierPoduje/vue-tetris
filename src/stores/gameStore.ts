@@ -1,14 +1,14 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getRandomPiece } from '@/utils'
-import { DirectionEnum, StateEnum, PieceColorEnum } from '@/models'
+import { DirectionEnum, StateEnum, type BoardCell } from '@/models'
 import type { Piece } from '@/models/piece'
 
 const BOARD_COLS = 10
 const BOARD_ROWS = 20
 
 export const useGameStore = defineStore('gameStore', () => {
-  const board = ref<{ color?: PieceColorEnum; used: boolean }[][]>(
+  const board = ref<BoardCell[][]>(
     Array.from({ length: BOARD_ROWS }, () =>
       Array.from({ length: BOARD_COLS }, () => ({ used: false }))
     )
@@ -17,6 +17,8 @@ export const useGameStore = defineStore('gameStore', () => {
   const piece = ref<Piece>(getRandomPiece())
   const state = ref<StateEnum>(StateEnum.Playing)
   const tickInterval = ref<number>(350)
+  const level = ref<number>(1)
+  const linesFilled = ref<number>(0)
 
   const updateBoard = () => {
     let boardUpdated = true
@@ -25,6 +27,11 @@ export const useGameStore = defineStore('gameStore', () => {
       for (let row = 0; row < BOARD_ROWS; row++) {
         const isRowFull = board.value[row].every(({ used }) => used)
         if (isRowFull) {
+          // increase the lines filled
+          linesFilled.value++
+          if (linesFilled.value > 10 && linesFilled.value % 10 === 0) {
+            level.value++
+          }
           boardUpdated = true
           // remove the row
           board.value.splice(row, 1)
@@ -38,7 +45,6 @@ export const useGameStore = defineStore('gameStore', () => {
   }
 
   const restartPiece = () => {
-    // add pice to the board with pieces
     piece.value.coords.forEach(({ row, col }) => {
       board.value[row][col] = {
         color: piece.value.color,
@@ -48,10 +54,7 @@ export const useGameStore = defineStore('gameStore', () => {
 
     updateBoard()
 
-    // set the next piece as the current piece
     piece.value = nextPiece.value
-
-    // set the next piece as a random piece
     nextPiece.value = getRandomPiece()
   }
 
@@ -63,7 +66,7 @@ export const useGameStore = defineStore('gameStore', () => {
       !pieceAlreadyEnteredTheBoard ||
       piece.value.moveIsValid(DirectionEnum.Down, board.value)
     ) {
-      // piece.value.moveDown()
+      piece.value.moveDown()
     } else {
       restartPiece()
     }
@@ -98,6 +101,7 @@ export const useGameStore = defineStore('gameStore', () => {
   return {
     // props
     board,
+    level,
     nextPiece,
     piece,
     state,

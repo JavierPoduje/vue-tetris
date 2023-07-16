@@ -1,6 +1,7 @@
 <template>
   <header class="header">
     <h1>Tetris</h1>
+    <p>Level: {{ store.level }}</p>
     <game-button text="Tick!" @click="store?.tick" />
   </header>
   <main class="main">
