@@ -19,16 +19,19 @@ export const useGameStore = defineStore('gameStore', () => {
   const tickInterval = ref<number>(350)
   const level = ref<number>(1)
   const linesFilled = ref<number>(0)
+  const points = ref<number>(0)
 
   const updateBoard = () => {
     let boardUpdated = true
     while (boardUpdated) {
       boardUpdated = false
+      let linesFilledInIteration = 0
       for (let row = 0; row < BOARD_ROWS; row++) {
         const isRowFull = board.value[row].every(({ used }) => used)
         if (isRowFull) {
           // increase the lines filled
           linesFilled.value++
+          linesFilledInIteration++
           if (linesFilled.value > 10 && linesFilled.value % 10 === 0) {
             level.value++
           }
@@ -41,6 +44,7 @@ export const useGameStore = defineStore('gameStore', () => {
           )
         }
       }
+      points.value += linesFilledInIteration * 100 * level.value
     }
   }
 
@@ -104,6 +108,7 @@ export const useGameStore = defineStore('gameStore', () => {
     level,
     nextPiece,
     piece,
+    points,
     state,
     tickInterval,
     // actions
