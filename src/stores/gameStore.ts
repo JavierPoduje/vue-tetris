@@ -18,6 +18,25 @@ export const useGameStore = defineStore('gameStore', () => {
   const state = ref<StateEnum>(StateEnum.Playing)
   const tickInterval = ref<number>(350)
 
+  const updateBoard = () => {
+    let boardUpdated = true
+    while (boardUpdated) {
+      boardUpdated = false
+      for (let row = 0; row < BOARD_ROWS; row++) {
+        const isRowFull = board.value[row].every(({ used }) => used)
+        if (isRowFull) {
+          boardUpdated = true
+          // remove the row
+          board.value.splice(row, 1)
+          // add a new row at the top
+          board.value.unshift(
+            Array.from({ length: BOARD_COLS }, () => ({ used: false }))
+          )
+        }
+      }
+    }
+  }
+
   const restartPiece = () => {
     // add pice to the board with pieces
     piece.value.coords.forEach(({ row, col }) => {
@@ -27,10 +46,11 @@ export const useGameStore = defineStore('gameStore', () => {
       }
     })
 
-    // TODO: check if any rows are full (iterate over this until necessary)
+    updateBoard()
 
     // set the next piece as the current piece
     piece.value = nextPiece.value
+
     // set the next piece as a random piece
     nextPiece.value = getRandomPiece()
   }
