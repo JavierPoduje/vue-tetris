@@ -1,21 +1,12 @@
 <template>
-  <header class="header">
-    <h1>Tetris</h1>
-    <GameButton text="Tick!" @click="store?.tick" />
-  </header>
-  <main class="main">
-    <GameGrid />
-    <ShowcaseGrid />
-  </main>
+  <app />
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted, watchEffect } from 'vue'
-  import { useGameStore } from './stores/gameStore.ts'
-  import GameGrid from './controllers/game-grid.vue'
-  import ShowcaseGrid from './controllers/showcase-grid.vue'
-  import GameButton from './components/game-button.vue'
-  import { StateEnum } from './models'
+  import { useGameStore } from '@/stores/gameStore.ts'
+  import App from '@/components/app.vue'
+  import { StateEnum } from '@/models'
 
   const store = useGameStore()
   const looping = ref(false)
@@ -58,25 +49,7 @@
   watchEffect(() => {
     if (store?.state === StateEnum.Playing && !looping.value) {
       looping.value = true
-      // setTimeout(loop, store?.tickInterval)
+      setTimeout(loop, store?.tickInterval)
     }
   })
 </script>
-
-<style scoped lang="scss">
-  .header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 3rem;
-  }
-
-  .main {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 3rem;
-    width: 100%;
-  }
-</style>
