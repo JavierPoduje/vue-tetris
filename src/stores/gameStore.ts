@@ -8,21 +8,20 @@ const BOARD_COLS = 10
 const BOARD_ROWS = 20
 
 export const useGameStore = defineStore('gameStore', () => {
-  const board = ref<number[][]>(
-    new Array(BOARD_ROWS).fill(new Array(BOARD_COLS).fill(0))
+  const board = ref<{ color?: PieceColorEnum; used: boolean }[][]>(
+    Array.from({ length: BOARD_ROWS }, () =>
+      Array.from({ length: BOARD_COLS }, () => ({ used: false }))
+    )
   )
   const nextPiece = ref<Piece>(getRandomPiece())
   const piece = ref<Piece>(getRandomPiece())
   const state = ref<StateEnum>(StateEnum.Playing)
   const tickInterval = ref<number>(350)
-  const boardWithPieces = ref<{ color?: PieceColorEnum; used: boolean }[][]>(
-    board.value.map((row) => row.map(() => ({ used: false })))
-  )
 
   const restartPiece = () => {
     // add pice to the board with pieces
     piece.value.coords.forEach(({ row, col }) => {
-      boardWithPieces.value[row][col] = {
+      board.value[row][col] = {
         color: piece.value.color,
         used: true
       }
@@ -37,8 +36,14 @@ export const useGameStore = defineStore('gameStore', () => {
   }
 
   const tick = () => {
-    if (piece.value.moveIsValid(DirectionEnum.Down, BOARD_ROWS, BOARD_COLS)) {
-      // moveDown()
+    const pieceAlreadyEnteredTheBoard = Array.from(piece.value.coords).every(
+      ({ row }) => row > 0
+    )
+    if (
+      !pieceAlreadyEnteredTheBoard ||
+      piece.value.moveIsValid(DirectionEnum.Down, board.value)
+    ) {
+      // piece.value.moveDown()
     } else {
       restartPiece()
     }
@@ -51,19 +56,21 @@ export const useGameStore = defineStore('gameStore', () => {
   }
 
   const moveDown = () => {
-    if (piece.value.moveIsValid(DirectionEnum.Down, BOARD_ROWS, BOARD_COLS)) {
+    if (piece.value.moveIsValid(DirectionEnum.Down, board.value)) {
       piece.value.moveDown()
+    } else {
+      restartPiece()
     }
   }
 
   const moveLeft = () => {
-    if (piece.value.moveIsValid(DirectionEnum.Left, BOARD_ROWS, BOARD_COLS)) {
+    if (piece.value.moveIsValid(DirectionEnum.Left, board.value)) {
       piece.value.moveLeft()
     }
   }
 
   const moveRight = () => {
-    if (piece.value.moveIsValid(DirectionEnum.Right, BOARD_ROWS, BOARD_COLS)) {
+    if (piece.value.moveIsValid(DirectionEnum.Right, board.value)) {
       piece.value.moveRight()
     }
   }
@@ -71,7 +78,6 @@ export const useGameStore = defineStore('gameStore', () => {
   return {
     // props
     board,
-    boardWithPieces,
     nextPiece,
     piece,
     state,

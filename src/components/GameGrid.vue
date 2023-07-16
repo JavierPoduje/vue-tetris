@@ -31,7 +31,7 @@
   })
 
   const getCellStyle = (row: number, col: number) => {
-    const boardCell = store?.boardWithPieces?.[row]?.[col]
+    const boardCell = store?.board[row][col]
     const isPiece = stringifyPieceCoords?.value?.has(
       stringifyCoord({ row, col })
     )

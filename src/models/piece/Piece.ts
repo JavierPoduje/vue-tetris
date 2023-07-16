@@ -1,5 +1,11 @@
-import { PieceColorEnum, type Coord, DirectionEnum } from '@/models'
+import {
+  PieceColorEnum,
+  type Coord,
+  DirectionEnum,
+  type BoardCell
+} from '@/models'
 import { type Piece } from './index'
+import { getRandomColor } from '@/utils'
 
 class BasePiece implements Omit<Piece, 'type' | 'rotate' | 'rotationIsValid'> {
   color: PieceColorEnum
@@ -7,7 +13,7 @@ class BasePiece implements Omit<Piece, 'type' | 'rotate' | 'rotationIsValid'> {
   lookingTo: DirectionEnum
 
   constructor() {
-    this.color = PieceColorEnum.SKY
+    this.color = getRandomColor()
     // this will be overwritten in the child class. Its here just to avoid
     // typescript errors
     this.coords = this._initialCoords()
@@ -38,14 +44,13 @@ class BasePiece implements Omit<Piece, 'type' | 'rotate' | 'rotationIsValid'> {
     }, new Set<Coord>())
   }
 
-  moveIsValid(
-    direction: DirectionEnum,
-    numberOfRows: number,
-    numberOfCols: number
-  ): boolean {
+  moveIsValid(direction: DirectionEnum, board: BoardCell[][]): boolean {
     if (direction === DirectionEnum.Up) {
       throw new Error('Cannot move piece up')
     }
+
+    const numberOfRows = board.length
+    const numberOfCols = board[0].length
 
     const inBounds = ({ row, col }: Coord): boolean => {
       if (direction === DirectionEnum.Down) {
@@ -59,7 +64,21 @@ class BasePiece implements Omit<Piece, 'type' | 'rotate' | 'rotationIsValid'> {
       }
     }
 
-    return Array.from(this.coords ?? []).every((coord) => inBounds(coord))
+    const cellNotUsed = ({ row, col }: Coord): boolean => {
+      if (direction === DirectionEnum.Down) {
+        return !board[row + 1]?.[col]?.used
+      } else if (direction === DirectionEnum.Left) {
+        return !board[row]?.[col - 1]?.used
+      } else if (direction === DirectionEnum.Right) {
+        return !board[row]?.[col + 1]?.used
+      } else {
+        throw new Error(`Unknown direction: ${direction}`)
+      }
+    }
+
+    return Array.from(this.coords ?? []).every(
+      (coord) => inBounds(coord) && cellNotUsed(coord)
+    )
   }
 
   // *** *** *** ***

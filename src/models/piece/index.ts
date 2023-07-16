@@ -9,7 +9,8 @@ import {
   PieceEnum,
   type Coord,
   type DirectionEnum,
-  type PieceColorEnum
+  type PieceColorEnum,
+  type BoardCell
 } from '@/models'
 
 export interface Piece {
@@ -22,8 +23,7 @@ export interface Piece {
   moveLeft: () => void
   moveIsValid: (
     direction: DirectionEnum,
-    numberOfRows: number,
-    numberOfCols: number
+    boardWithPieces: BoardCell[][]
   ) => boolean
   rotationIsValid: (
     isClockwise: boolean,

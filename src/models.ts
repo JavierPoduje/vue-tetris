@@ -30,6 +30,11 @@ export interface Coord {
   col: number
 }
 
+export interface BoardCell {
+  color?: PieceColorEnum
+  used: boolean
+}
+
 export enum StateEnum {
   Playing = 'playing',
   Paused = 'paused',
