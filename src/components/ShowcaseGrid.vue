@@ -12,17 +12,30 @@
 </template>
 
 <script setup lang="ts">
+  import { watch } from 'vue'
+  import { useGameStore } from '@/stores/gameStore'
   import { pieceShowcase, stringifyCoord } from '@/utils'
 
-  const props = defineProps<{
-    nextPiece: { type: Object; required: true }
-  }>()
+  const store = useGameStore()
 
-  const pieceSet = pieceShowcase(props.nextPiece)
+  const pieceSet = pieceShowcase(store.nextPiece)
 
   const stylePiece = (row: number, col: number): string => {
-    return pieceSet?.has(stringifyCoord({ row, col })) && 'cell--filled'
+    return (
+      pieceSet?.has(stringifyCoord({ row, col })) &&
+      `cell--${store.nextPiece.color}`
+    )
   }
+
+  watch(
+    () => store.nextPiece,
+    () => {
+      pieceSet.clear()
+      pieceShowcase(store.nextPiece).forEach((coord) => {
+        pieceSet.add(coord)
+      })
+    }
+  )
 
   const grid = new Array(4)
     .fill()
@@ -64,8 +77,26 @@
         color: map-get($colors, blue);
         font-size: 8px;
 
-        &--filled {
+        &--rosewater {
+          background-color: map-get($colors, rosewater);
+        }
+        &--sky {
+          background-color: map-get($colors, sky);
+        }
+        &--green {
+          background-color: map-get($colors, green);
+        }
+        &--peach {
+          background-color: map-get($colors, peach);
+        }
+        &--mauve {
           background-color: map-get($colors, mauve);
+        }
+        &--red {
+          background-color: map-get($colors, red);
+        }
+        &--yellow {
+          background-color: map-get($colors, yellow);
         }
       }
     }
