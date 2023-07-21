@@ -3,6 +3,7 @@
     <h1>Tetris</h1>
     <p>Level: {{ store.level }}</p>
     <p>Points: {{ store.points }}</p>
+    <p v-show="store.state === StateEnum.Gameover">Game Over!</p>
     <game-button text="Tick!" @click="store?.tick" />
   </header>
   <main class="main">
@@ -16,6 +17,7 @@
   import GameGrid from '@/controllers/game-grid.vue'
   import ShowcaseGrid from '@/controllers/showcase-grid.vue'
   import GameButton from '@/components/game-button.vue'
+  import { StateEnum } from '../models'
 
   const store = useGameStore()
 </script>

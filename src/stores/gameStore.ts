@@ -35,7 +35,7 @@ export const useGameStore = defineStore('gameStore', () => {
   const rotate = (clockwise: boolean) =>
     rotateAction(piece, BOARD_ROWS, BOARD_COLS, clockwise)
   const tick = () =>
-    tickAction(piece, nextPiece, board, linesFilled, level, points)
+    tickAction(piece, nextPiece, board, linesFilled, level, points, state)
 
   return {
     // props

@@ -2,6 +2,7 @@ import type { Ref } from 'vue'
 import restartPiece from './restart-piece'
 import { DirectionEnum, type BoardCell } from '@/models'
 import type { Piece } from '@/models/piece'
+import { StateEnum } from '@/models'
 
 const tick = (
   piece: Ref<Piece>,
@@ -9,11 +10,22 @@ const tick = (
   board: Ref<BoardCell[][]>,
   linesFilled: Ref<number>,
   level: Ref<number>,
-  points: Ref<number>
+  points: Ref<number>,
+  state: Ref<StateEnum>
 ) => {
   const pieceAlreadyEnteredTheBoard = Array.from(piece.value.coords).every(
     ({ row }) => row > 0
   )
+
+  const overflowsBoard =
+    !pieceAlreadyEnteredTheBoard &&
+    !piece.value.moveIsValid(DirectionEnum.Down, board.value)
+
+  if (overflowsBoard) {
+    state.value = StateEnum.Gameover
+    return
+  }
+
   if (
     !pieceAlreadyEnteredTheBoard ||
     piece.value.moveIsValid(DirectionEnum.Down, board.value)
