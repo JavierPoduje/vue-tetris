@@ -40,10 +40,3 @@ export enum StateEnum {
   Paused = 'paused',
   Gameover = 'gameover'
 }
-
-export interface Piece {
-  type: PieceEnum
-  color: PieceColorEnum
-  coords: Set<Coord>
-  lookingTo: DirectionEnum
-}

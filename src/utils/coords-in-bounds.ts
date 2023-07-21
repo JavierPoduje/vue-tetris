@@ -1,4 +1,4 @@
-import coordInBounds from './coordInBounds'
+import coordInBounds from './coord-in-bounds'
 import type { Coord } from '@/models'
 
 const coordsInBounds = (

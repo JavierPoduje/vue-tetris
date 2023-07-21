@@ -1,9 +1,9 @@
-import coordInBounds from './coordInBounds'
-import coordsInBounds from './coordsInBounds'
-import getRandomColor from './getRandomColor'
-import getRandomPiece from './getRandomPiece'
-import pieceShowcase from './pieceShowcase'
-import stringifyCoord from './stringifyCoord'
+import coordInBounds from './coord-in-bounds'
+import coordsInBounds from './coords-in-bounds'
+import getRandomColor from './get-random-color'
+import getRandomPiece from './get-random-piece'
+import pieceShowcase from './piece-showcase'
+import stringifyCoord from './stringify-coord'
 
 export {
   coordsInBounds,
