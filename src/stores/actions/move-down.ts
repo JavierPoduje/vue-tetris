@@ -1,5 +1,5 @@
 import { DirectionEnum, type BoardCell } from '@/models'
-import restartPiece from './/restart-piece'
+import restartPiece from './restart-piece'
 import type { Piece } from '@/models/piece'
 import type { Ref } from 'vue'
 
@@ -10,6 +10,7 @@ const moveDown = (
   linesFilled: Ref<number>,
   level: Ref<number>,
   points: Ref<number>,
+  tickInterval: Ref<number>
 ) => {
   if (piece.value.moveIsValid(DirectionEnum.Down, board.value)) {
     piece.value.moveDown()
@@ -21,6 +22,7 @@ const moveDown = (
       linesFilled,
       level,
       points,
+      tickInterval
     )
   }
 }

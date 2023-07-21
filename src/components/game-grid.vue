@@ -6,9 +6,7 @@
         :key="`${row}-${col}`"
         class="cell"
         :class="getCellStyle(row, col)"
-      >
-        {{ row }} {{ col }}
-      </div>
+      />
     </div>
   </section>
 </template>

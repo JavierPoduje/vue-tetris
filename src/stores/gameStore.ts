@@ -29,18 +29,36 @@ export const useGameStore = defineStore('gameStore', () => {
 
   // actions
   const moveDown = () =>
-    moveDownAction(piece, nextPiece, board, linesFilled, level, points)
+    moveDownAction(
+      piece,
+      nextPiece,
+      board,
+      linesFilled,
+      level,
+      points,
+      tickInterval
+    )
   const moveLeft = () => moveLeftAction(piece, board)
   const moveRight = () => moveRightAction(piece, board)
   const rotate = (clockwise: boolean) =>
     rotateAction(piece, BOARD_ROWS, BOARD_COLS, clockwise)
   const tick = () =>
-    tickAction(piece, nextPiece, board, linesFilled, level, points, state)
+    tickAction(
+      piece,
+      nextPiece,
+      board,
+      linesFilled,
+      level,
+      points,
+      state,
+      tickInterval
+    )
 
   return {
     // props
     board,
     level,
+    linesFilled,
     nextPiece,
     piece,
     points,

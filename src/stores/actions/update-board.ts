@@ -5,7 +5,8 @@ const updateBoard = (
   board: Ref<BoardCell[][]>,
   linesFilled: Ref<number>,
   level: Ref<number>,
-  points: Ref<number>
+  points: Ref<number>,
+  tickInterval: Ref<number>
 ) => {
   let boardUpdated = true
   while (boardUpdated) {
@@ -17,9 +18,13 @@ const updateBoard = (
         // increase the lines filled
         linesFilled.value++
         linesFilledInIteration++
-        if (linesFilled.value > 10 && linesFilled.value % 10 === 0) {
+
+        // increase the level and the speed of the game every 10 lines
+        if (linesFilled.value % 10 === 0) {
           level.value++
+          tickInterval.value *= 0.75
         }
+
         boardUpdated = true
         // remove the row
         board.value.splice(row, 1)

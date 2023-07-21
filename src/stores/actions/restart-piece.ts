@@ -10,7 +10,8 @@ const restartPiece = (
   board: Ref<BoardCell[][]>,
   linesFilled: Ref<number>,
   level: Ref<number>,
-  points: Ref<number>
+  points: Ref<number>,
+  tickInterval: Ref<number>
 ) => {
   piece.value.coords.forEach(({ row, col }) => {
     board.value[row][col] = {
@@ -19,7 +20,7 @@ const restartPiece = (
     }
   })
 
-  updateBoard(board, linesFilled, level, points)
+  updateBoard(board, linesFilled, level, points, tickInterval)
 
   piece.value = nextPiece.value
   nextPiece.value = getRandomPiece()

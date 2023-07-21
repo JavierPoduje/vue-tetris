@@ -11,7 +11,8 @@ const tick = (
   linesFilled: Ref<number>,
   level: Ref<number>,
   points: Ref<number>,
-  state: Ref<StateEnum>
+  state: Ref<StateEnum>,
+  tickInterval: Ref<number>,
 ) => {
   const pieceAlreadyEnteredTheBoard = Array.from(piece.value.coords).every(
     ({ row }) => row > 0
@@ -32,7 +33,7 @@ const tick = (
   ) {
     piece.value.moveDown()
   } else {
-    restartPiece(piece, nextPiece, board, linesFilled, level, points)
+    restartPiece(piece, nextPiece, board, linesFilled, level, points, tickInterval)
   }
 }
 

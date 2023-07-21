@@ -3,12 +3,12 @@
     <h1>Tetris</h1>
     <p>Level: {{ store.level }}</p>
     <p>Points: {{ store.points }}</p>
+    <p>Lines: {{ store.linesFilled }}</p>
     <p v-show="store.state === StateEnum.Gameover">Game Over!</p>
-    <game-button text="Tick!" @click="store?.tick" />
   </header>
   <main class="main">
-    <game-grid />
-    <showcase-grid />
+    <game-grid class="main__grid" />
+    <showcase-grid class="main__showcase" />
   </main>
 </template>
 
@@ -32,10 +32,18 @@
   }
 
   .main {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 3rem;
-    width: 100%;
+    align-self: center;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    grid-template-areas: 'grid showcase';
+    width: 35%;
+
+    &__grid {
+      grid-area: grid;
+    }
+
+    &__showcase {
+      grid-area: showcase;
+    }
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <section class="grid">
+  <aside class="grid">
     <div class="grid__container">
       <div
         v-for="{ row, col } in grid"
@@ -8,7 +8,7 @@
         :class="stylePiece(row, col)"
       />
     </div>
-  </section>
+  </aside>
 </template>
 
 <script setup lang="ts">
