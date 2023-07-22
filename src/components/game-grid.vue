@@ -13,24 +13,14 @@
 
 <script setup lang="ts">
   import { stringifyCoord } from '../utils'
+  import { type Coord, type BoardCell } from '@/models'
+  import { type Piece } from '@/models/piece'
 
   const props = defineProps<{
-    grid: {
-      type: Array
-      required: true
-    }
-    stringifyPieceCoords: {
-      type: Set<string>
-      required: true
-    }
-    board: {
-      type: Array
-      required: true
-    }
-    currentPiece: {
-      type: Piece
-      required: true
-    }
+    grid: Coord[]
+    stringifyPieceCoords: Set<string>
+    board: BoardCell[][]
+    currentPiece: Piece
   }>()
 
   const getCellStyle = (row: number, col: number) => {

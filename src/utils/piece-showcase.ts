@@ -1,5 +1,6 @@
+import type { Piece } from '@/models/piece'
 import stringifyCoord from './stringify-coord'
-import { type Piece, PieceEnum } from '@/models'
+import { PieceEnum } from '@/models'
 
 const showcaseI = () => {
   return new Set([

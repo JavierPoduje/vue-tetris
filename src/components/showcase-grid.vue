@@ -13,27 +13,20 @@
 
 <script setup lang="ts">
   import { stringifyCoord } from '@/utils'
+  import { type Coord } from '@/models'
+  import { type Piece } from '@/models/piece'
 
   const props = defineProps<{
-    pieceSet: {
-      type: Set
-      required: true
-    }
-    grid: {
-      type: Array
-      required: true
-    }
-    nextPiece: {
-      type: Piece
-      required: true
-    }
+    pieceSet: Set<string>
+    grid: Coord[]
+    nextPiece: Piece
   }>()
 
   const stylePiece = (row: number, col: number): string => {
-    return (
-      props.pieceSet.has(stringifyCoord({ row, col })) &&
-      `cell--${props.nextPiece.color}`
-    )
+    if (props.pieceSet.has(stringifyCoord({ row, col }))) {
+      return `cell--${props.nextPiece.color}`
+    }
+    return ''
   }
 </script>
 

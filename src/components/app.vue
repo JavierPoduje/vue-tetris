@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useGameStore } from '@/stores/gameStore.ts'
+  import { useGameStore } from '@/stores/gameStore'
   import GameGrid from '@/controllers/game-grid.vue'
   import ShowcaseGrid from '@/controllers/showcase-grid.vue'
   import { StateEnum } from '../models'

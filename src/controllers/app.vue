@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted, watchEffect } from 'vue'
-  import { useGameStore } from '@/stores/gameStore.ts'
+  import { useGameStore } from '@/stores/gameStore'
   import App from '@/components/app.vue'
   import { StateEnum } from '@/models'
 
@@ -15,7 +15,7 @@
     store.tick()
 
     // if the game change its state, stop the loop
-    if (store?.state === StateEnum.Running) {
+    if (store?.state === StateEnum.Playing) {
       setTimeout(loop, store?.tickInterval)
     } else {
       looping.value = false
@@ -31,13 +31,13 @@
         store?.rotate(!isShiftDown)
         break
       case 'arrowdown':
-        store?.moveDown(!isShiftDown)
+        store?.moveDown()
         break
       case 'arrowleft':
-        store?.moveLeft(!isShiftDown)
+        store?.moveLeft()
         break
       case 'arrowright':
-        store?.moveRight(!isShiftDown)
+        store?.moveRight()
         break
     }
   }

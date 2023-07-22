@@ -26,7 +26,7 @@
   )
 
   const grid = new Array(4)
-    .fill()
+    .fill({})
     .map(() => new Array(3).fill(0))
     .reduce((acc, row, rowIdx) => {
       return acc?.concat(
