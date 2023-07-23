@@ -6,8 +6,7 @@ import rotateAction from './actions/rotate'
 import moveLeftAction from './actions/move-left'
 import tickAction from './actions/tick'
 import moveRightAction from './actions/move-right'
-import { StateEnum, type BoardCell } from '@/models'
-import type { Piece } from '@/models/piece'
+import { StateEnum, type BoardCell, type Piece } from '@/models'
 
 const BOARD_COLS = 10
 const BOARD_ROWS = 20

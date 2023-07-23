@@ -1,6 +1,5 @@
-import { DirectionEnum, type BoardCell } from '@/models'
+import { DirectionEnum, type BoardCell, type Piece } from '@/models'
 import restartPiece from './restart-piece'
-import type { Piece } from '@/models/piece'
 import type { Ref } from 'vue'
 
 const moveDown = (

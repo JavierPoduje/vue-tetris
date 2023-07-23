@@ -13,8 +13,7 @@
 
 <script setup lang="ts">
   import { stringifyCoord } from '@/utils'
-  import { type Coord } from '@/models'
-  import { type Piece } from '@/models/piece'
+  import { type Coord, type Piece } from '@/models'
 
   const props = defineProps<{
     pieceSet: Set<string>

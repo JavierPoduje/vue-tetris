@@ -1,5 +1,4 @@
-import { PieceEnum } from '@/models'
-import { PieceFactory, type Piece } from '@/models/piece'
+import { PieceEnum, PieceFactory, type Piece } from '@/models'
 
 const getRandomPiece = (): Piece => {
   const pieceTypes: PieceEnum[] = [

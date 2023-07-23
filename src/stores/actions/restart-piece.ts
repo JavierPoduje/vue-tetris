@@ -1,8 +1,7 @@
 import type { Ref } from 'vue'
 import updateBoard from './update-board'
 import { getRandomPiece } from '@/utils'
-import type { Piece } from '@/models/piece'
-import type { BoardCell } from '@/models'
+import type { BoardCell, Piece } from '@/models'
 
 const restartPiece = (
   piece: Ref<Piece>,

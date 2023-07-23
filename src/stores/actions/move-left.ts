@@ -1,6 +1,5 @@
-import { DirectionEnum, type BoardCell } from '@/models'
-import type { Piece } from '@/models/piece'
 import type { Ref } from 'vue'
+import { DirectionEnum, type BoardCell, type Piece } from '@/models'
 
 const moveLeft = (piece: Ref<Piece>, board: Ref<BoardCell[][]>) => {
   if (piece.value.moveIsValid(DirectionEnum.Left, board.value)) {

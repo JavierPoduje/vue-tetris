@@ -13,8 +13,7 @@
 
 <script setup lang="ts">
   import { stringifyCoord } from '../utils'
-  import { type Coord, type BoardCell } from '@/models'
-  import { type Piece } from '@/models/piece'
+  import { type Coord, type BoardCell, type Piece } from '@/models'
 
   const props = defineProps<{
     grid: Coord[]

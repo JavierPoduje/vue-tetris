@@ -1,5 +1,4 @@
-import { DirectionEnum, type BoardCell } from '@/models'
-import type { Piece } from '@/models/piece'
+import { DirectionEnum, type BoardCell, type Piece } from '@/models'
 import type { Ref } from 'vue'
 
 const moveRight = (piece: Ref<Piece>, board: Ref<BoardCell[][]>) => {

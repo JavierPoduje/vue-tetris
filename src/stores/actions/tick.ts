@@ -1,8 +1,7 @@
 import type { Ref } from 'vue'
 import restartPiece from './restart-piece'
 import { DirectionEnum, type BoardCell } from '@/models'
-import type { Piece } from '@/models/piece'
-import { StateEnum } from '@/models'
+import { StateEnum, type Piece } from '@/models'
 
 const tick = (
   piece: Ref<Piece>,
@@ -12,7 +11,7 @@ const tick = (
   level: Ref<number>,
   points: Ref<number>,
   state: Ref<StateEnum>,
-  tickInterval: Ref<number>,
+  tickInterval: Ref<number>
 ) => {
   const pieceAlreadyEnteredTheBoard = Array.from(piece.value.coords).every(
     ({ row }) => row > 0
@@ -33,7 +32,15 @@ const tick = (
   ) {
     piece.value.moveDown()
   } else {
-    restartPiece(piece, nextPiece, board, linesFilled, level, points, tickInterval)
+    restartPiece(
+      piece,
+      nextPiece,
+      board,
+      linesFilled,
+      level,
+      points,
+      tickInterval
+    )
   }
 }
 
